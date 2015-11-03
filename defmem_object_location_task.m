@@ -1,12 +1,14 @@
 clear all
 datPth = '~/defmem/data';
-%%concatenating read logs
-
-nSubs = 16;
 
 
 %% initialize variables
+nSubs = 16;
 nTrials = nan(nSubs,1);
+nPos = 8;
+locationError = nan(nPos,nSubs);
+
+%load UDK files of all subjects
 
 for iSub = 1:nSubs
     
@@ -19,47 +21,43 @@ end
 % get number of valid trials
 for iSub = 1:nSubs
     
-    if length(trial(iSub).cueID) <= 239
+    if length(trial(iSub).dropLocX) <= 239
         
-        nTrials(iSub) = length(trial(iSub).cueID);
+        nTrials(iSub) = length(trial(iSub).dropLocX);
         
     else
         nTrials(iSub) = 239;
     end
 end
 
-%%%%LOADING MULTIPLE FILES AT ONCE
-%sub(iSub)=load('M:\defmem\data\UDK_logssub_%02d_2.mat', 'trial', iSub);
-%subs= load('UDK_logssub_\d_2.mat', 'trial', iSub);
-%%%%%%%%%%%
+%get drop error in radians per participant per trial
 
-%%creating means of all subjects per location
+for iSub=1:nSubs;
+    
+    [~, trial(:,iSub).droperror] = cart2pol(trial(:,iSub).dropLocX, trial(:,iSub).dropLocY);
 
-%sub_1.trial.cueID=sub_1.trial.cueID(1:217);
-%sub_2.trial.cueID=sub_2.trial.cueID(1:239);
-%sub_3.trial.cueID=sub_3.trial.cueID(1:225);
-%sub_4.trial.cueID=sub_4.trial.cueID(1:239);
-%sub_5.trial.cueID=sub_5.trial.cueID(1:239);
-%sub_6.trial.cueID=sub_6.trial.cueID(1:239);
-%sub_7.trial.cueID=sub_7.trial.cueID(1:239);
-%sub_8.trial.cueID=sub_8.trial.cueID(1:167);
-%sub_9.trial.cueID=sub_9.trial.cueID(1:239);
-%sub_10.trial.cueID=sub_10.trial.cueID(1:239);
-%sub_11.trial.cueID=sub_11.trial.cueID(1:239);
-%sub_12.trial.cueID=sub_12.trial.cueID(1:239);
-%sub_13.trial.cueID=sub_13.trial.cueID(1:239);
-%sub_14.trial.cueID=sub_14.trial.cueID(1:239);
-%sub_15.trial.cueID=sub_15.trial.cueID(1:239);
-%sub_16.trial.cueID=sub_16.trial.cueID(1:239);
+end
 
-mean_drop_locX= [mean(sub_1.trial.dropLocX(sub_1.trial.cueID==1)),mean(sub_1.trial.dropLocX(sub_1.trial.cueID==2)),mean(sub_1.trial.dropLocX(sub_1.trial.cueID==3)),mean(sub_1.trial.dropLocX(sub_1.trial.cueID==4)),mean(sub_1.trial.dropLocX(sub_1.trial.cueID==5)),mean(sub_1.trial.dropLocX(sub_1.trial.cueID==6)),mean(sub_1.trial.dropLocX(sub_1.trial.cueID==7)),mean(sub_1.trial.dropLocX(sub_1.trial.cueID==8));mean(sub_2.trial.dropLocX(sub_2.trial.cueID==1)),mean(sub_2.trial.dropLocX(sub_2.trial.cueID==2)),mean(sub_2.trial.dropLocX(sub_2.trial.cueID==3)),mean(sub_2.trial.dropLocX(sub_2.trial.cueID==4)),mean(sub_2.trial.dropLocX(sub_2.trial.cueID==5)),mean(sub_2.trial.dropLocX(sub_2.trial.cueID==6)),mean(sub_2.trial.dropLocX(sub_2.trial.cueID==7)),mean(sub_2.trial.dropLocX(sub_2.trial.cueID==8));mean(sub_3.trial.dropLocX(sub_3.trial.cueID==1)),mean(sub_3.trial.dropLocX(sub_3.trial.cueID==2)),mean(sub_3.trial.dropLocX(sub_3.trial.cueID==3)),mean(sub_3.trial.dropLocX(sub_3.trial.cueID==4)),mean(sub_3.trial.dropLocX(sub_3.trial.cueID==5)),mean(sub_3.trial.dropLocX(sub_3.trial.cueID==6)),mean(sub_3.trial.dropLocX(sub_3.trial.cueID==7)),mean(sub_3.trial.dropLocX(sub_3.trial.cueID==8));mean(sub_4.trial.dropLocX(sub_4.trial.cueID==1)),mean(sub_4.trial.dropLocX(sub_4.trial.cueID==2)),mean(sub_4.trial.dropLocX(sub_4.trial.cueID==3)),mean(sub_4.trial.dropLocX(sub_4.trial.cueID==4)),mean(sub_4.trial.dropLocX(sub_4.trial.cueID==5)),mean(sub_4.trial.dropLocX(sub_4.trial.cueID==6)),mean(sub_4.trial.dropLocX(sub_4.trial.cueID==7)),mean(sub_4.trial.dropLocX(sub_4.trial.cueID==8));mean(sub_5.trial.dropLocX(sub_5.trial.cueID==1)),mean(sub_5.trial.dropLocX(sub_5.trial.cueID==2)),mean(sub_5.trial.dropLocX(sub_5.trial.cueID==3)),mean(sub_5.trial.dropLocX(sub_5.trial.cueID==4)),mean(sub_5.trial.dropLocX(sub_5.trial.cueID==5)),mean(sub_5.trial.dropLocX(sub_5.trial.cueID==6)),mean(sub_5.trial.dropLocX(sub_5.trial.cueID==7)),mean(sub_5.trial.dropLocX(sub_5.trial.cueID==8));mean(sub_6.trial.dropLocX(sub_6.trial.cueID==1)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==2)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==3)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==4)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==5)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==6)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==7)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==8));mean(sub_7.trial.dropLocX(sub_7.trial.cueID==1)),mean(sub_7.trial.dropLocX(sub_7.trial.cueID==2)),mean(sub_7.trial.dropLocX(sub_7.trial.cueID==3)),mean(sub_7.trial.dropLocX(sub_7.trial.cueID==4)),mean(sub_7.trial.dropLocX(sub_7.trial.cueID==5)),mean(sub_7.trial.dropLocX(sub_7.trial.cueID==6)),mean(sub_7.trial.dropLocX(sub_7.trial.cueID==7)),mean(sub_7.trial.dropLocX(sub_7.trial.cueID==8));mean(sub_8.trial.dropLocX(sub_8.trial.cueID==1)),mean(sub_8.trial.dropLocX(sub_8.trial.cueID==2)),mean(sub_8.trial.dropLocX(sub_8.trial.cueID==3)),mean(sub_8.trial.dropLocX(sub_8.trial.cueID==4)),mean(sub_8.trial.dropLocX(sub_8.trial.cueID==5)),mean(sub_8.trial.dropLocX(sub_8.trial.cueID==6)),mean(sub_8.trial.dropLocX(sub_8.trial.cueID==7)),mean(sub_8.trial.dropLocX(sub_8.trial.cueID==8));mean(sub_9.trial.dropLocX(sub_9.trial.cueID==1)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==2)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==3)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==4)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==5)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==6)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==7)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==8));mean(sub_10.trial.dropLocX(sub_10.trial.cueID==1)),mean(sub_10.trial.dropLocX(sub_10.trial.cueID==2)),mean(sub_10.trial.dropLocX(sub_10.trial.cueID==3)),mean(sub_10.trial.dropLocX(sub_10.trial.cueID==4)),mean(sub_10.trial.dropLocX(sub_10.trial.cueID==5)),mean(sub_10.trial.dropLocX(sub_10.trial.cueID==6)),mean(sub_10.trial.dropLocX(sub_10.trial.cueID==7)),mean(sub_10.trial.dropLocX(sub_10.trial.cueID==8));mean(sub_11.trial.dropLocX(sub_11.trial.cueID==1)),mean(sub_11.trial.dropLocX(sub_11.trial.cueID==2)),mean(sub_11.trial.dropLocX(sub_11.trial.cueID==3)),mean(sub_11.trial.dropLocX(sub_11.trial.cueID==4)),mean(sub_11.trial.dropLocX(sub_11.trial.cueID==5)),mean(sub_11.trial.dropLocX(sub_11.trial.cueID==6)),mean(sub_11.trial.dropLocX(sub_11.trial.cueID==7)),mean(sub_11.trial.dropLocX(sub_11.trial.cueID==8));mean(sub_12.trial.dropLocX(sub_12.trial.cueID==1)),mean(sub_12.trial.dropLocX(sub_12.trial.cueID==2)),mean(sub_12.trial.dropLocX(sub_12.trial.cueID==3)),mean(sub_12.trial.dropLocX(sub_12.trial.cueID==4)),mean(sub_12.trial.dropLocX(sub_12.trial.cueID==5)),mean(sub_12.trial.dropLocX(sub_12.trial.cueID==6)),mean(sub_12.trial.dropLocX(sub_12.trial.cueID==7)),mean(sub_12.trial.dropLocX(sub_12.trial.cueID==8));mean(sub_13.trial.dropLocX(sub_13.trial.cueID==1)),mean(sub_13.trial.dropLocX(sub_13.trial.cueID==2)),mean(sub_13.trial.dropLocX(sub_13.trial.cueID==3)),mean(sub_13.trial.dropLocX(sub_13.trial.cueID==4)),mean(sub_13.trial.dropLocX(sub_13.trial.cueID==5)),mean(sub_13.trial.dropLocX(sub_13.trial.cueID==6)),mean(sub_13.trial.dropLocX(sub_13.trial.cueID==7)),mean(sub_13.trial.dropLocX(sub_13.trial.cueID==8));mean(sub_14.trial.dropLocX(sub_14.trial.cueID==1)),mean(sub_14.trial.dropLocX(sub_14.trial.cueID==2)),mean(sub_14.trial.dropLocX(sub_14.trial.cueID==3)),mean(sub_14.trial.dropLocX(sub_14.trial.cueID==4)),mean(sub_14.trial.dropLocX(sub_14.trial.cueID==5)),mean(sub_14.trial.dropLocX(sub_14.trial.cueID==6)),mean(sub_14.trial.dropLocX(sub_14.trial.cueID==7)),mean(sub_14.trial.dropLocX(sub_14.trial.cueID==8));mean(sub_15.trial.dropLocX(sub_15.trial.cueID==1)),mean(sub_15.trial.dropLocX(sub_15.trial.cueID==2)),mean(sub_15.trial.dropLocX(sub_15.trial.cueID==3)),mean(sub_15.trial.dropLocX(sub_15.trial.cueID==4)),mean(sub_15.trial.dropLocX(sub_15.trial.cueID==5)),mean(sub_15.trial.dropLocX(sub_15.trial.cueID==6)),mean(sub_15.trial.dropLocX(sub_15.trial.cueID==7)),mean(sub_15.trial.dropLocX(sub_15.trial.cueID==8));mean(sub_16.trial.dropLocX(sub_16.trial.cueID==1)),mean(sub_16.trial.dropLocX(sub_16.trial.cueID==2)),mean(sub_16.trial.dropLocX(sub_16.trial.cueID==3)),mean(sub_16.trial.dropLocX(sub_16.trial.cueID==4)),mean(sub_16.trial.dropLocX(sub_16.trial.cueID==5)),mean(sub_16.trial.dropLocX(sub_16.trial.cueID==6)),mean(sub_16.trial.dropLocX(sub_16.trial.cueID==7)),mean(sub_16.trial.dropLocX(sub_16.trial.cueID==8))];
-%%% do it easier
-%meanlocx= mean(sprintf('sub_%d.trial.dropLocX'(sprintf('sub_%d.trial.cueID'==1,iSub)), iSub);
+%get average drop error per participant = how good they were
 
-mean_drop_locY= [mean(sub_1.trial.dropLocY(sub_1.trial.cueID==1)),mean(sub_1.trial.dropLocY(sub_1.trial.cueID==2)),mean(sub_1.trial.dropLocY(sub_1.trial.cueID==3)),mean(sub_1.trial.dropLocY(sub_1.trial.cueID==4)),mean(sub_1.trial.dropLocY(sub_1.trial.cueID==5)),mean(sub_1.trial.dropLocY(sub_1.trial.cueID==6)),mean(sub_1.trial.dropLocY(sub_1.trial.cueID==7)),mean(sub_1.trial.dropLocY(sub_1.trial.cueID==8));mean(sub_2.trial.dropLocY(sub_2.trial.cueID==1)),mean(sub_2.trial.dropLocY(sub_2.trial.cueID==2)),mean(sub_2.trial.dropLocY(sub_2.trial.cueID==3)),mean(sub_2.trial.dropLocY(sub_2.trial.cueID==4)),mean(sub_2.trial.dropLocY(sub_2.trial.cueID==5)),mean(sub_2.trial.dropLocY(sub_2.trial.cueID==6)),mean(sub_2.trial.dropLocY(sub_2.trial.cueID==7)),mean(sub_2.trial.dropLocY(sub_2.trial.cueID==8));mean(sub_3.trial.dropLocY(sub_3.trial.cueID==1)),mean(sub_3.trial.dropLocY(sub_3.trial.cueID==2)),mean(sub_3.trial.dropLocY(sub_3.trial.cueID==3)),mean(sub_3.trial.dropLocY(sub_3.trial.cueID==4)),mean(sub_3.trial.dropLocY(sub_3.trial.cueID==5)),mean(sub_3.trial.dropLocY(sub_3.trial.cueID==6)),mean(sub_3.trial.dropLocY(sub_3.trial.cueID==7)),mean(sub_3.trial.dropLocY(sub_3.trial.cueID==8));mean(sub_4.trial.dropLocY(sub_4.trial.cueID==1)),mean(sub_4.trial.dropLocY(sub_4.trial.cueID==2)),mean(sub_4.trial.dropLocY(sub_4.trial.cueID==3)),mean(sub_4.trial.dropLocY(sub_4.trial.cueID==4)),mean(sub_4.trial.dropLocY(sub_4.trial.cueID==5)),mean(sub_4.trial.dropLocY(sub_4.trial.cueID==6)),mean(sub_4.trial.dropLocY(sub_4.trial.cueID==7)),mean(sub_4.trial.dropLocY(sub_4.trial.cueID==8));mean(sub_5.trial.dropLocY(sub_5.trial.cueID==1)),mean(sub_5.trial.dropLocY(sub_5.trial.cueID==2)),mean(sub_5.trial.dropLocY(sub_5.trial.cueID==3)),mean(sub_5.trial.dropLocY(sub_5.trial.cueID==4)),mean(sub_5.trial.dropLocY(sub_5.trial.cueID==5)),mean(sub_5.trial.dropLocY(sub_5.trial.cueID==6)),mean(sub_5.trial.dropLocY(sub_5.trial.cueID==7)),mean(sub_5.trial.dropLocY(sub_5.trial.cueID==8));mean(sub_6.trial.dropLocY(sub_6.trial.cueID==1)),mean(sub_6.trial.dropLocY(sub_6.trial.cueID==2)),mean(sub_6.trial.dropLocY(sub_6.trial.cueID==3)),mean(sub_6.trial.dropLocY(sub_6.trial.cueID==4)),mean(sub_6.trial.dropLocY(sub_6.trial.cueID==5)),mean(sub_6.trial.dropLocY(sub_6.trial.cueID==6)),mean(sub_6.trial.dropLocY(sub_6.trial.cueID==7)),mean(sub_6.trial.dropLocX(sub_6.trial.cueID==8));mean(sub_7.trial.dropLocX(sub_7.trial.cueID==1)),mean(sub_7.trial.dropLocY(sub_7.trial.cueID==2)),mean(sub_7.trial.dropLocY(sub_7.trial.cueID==3)),mean(sub_7.trial.dropLocY(sub_7.trial.cueID==4)),mean(sub_7.trial.dropLocY(sub_7.trial.cueID==5)),mean(sub_7.trial.dropLocY(sub_7.trial.cueID==6)),mean(sub_7.trial.dropLocY(sub_7.trial.cueID==7)),mean(sub_7.trial.dropLocY(sub_7.trial.cueID==8));mean(sub_8.trial.dropLocY(sub_8.trial.cueID==1)),mean(sub_8.trial.dropLocY(sub_8.trial.cueID==2)),mean(sub_8.trial.dropLocY(sub_8.trial.cueID==3)),mean(sub_8.trial.dropLocY(sub_8.trial.cueID==4)),mean(sub_8.trial.dropLocY(sub_8.trial.cueID==5)),mean(sub_8.trial.dropLocY(sub_8.trial.cueID==6)),mean(sub_8.trial.dropLocY(sub_8.trial.cueID==7)),mean(sub_8.trial.dropLocY(sub_8.trial.cueID==8));mean(sub_9.trial.dropLocY(sub_9.trial.cueID==1)),mean(sub_9.trial.dropLocY(sub_9.trial.cueID==2)),mean(sub_9.trial.dropLocY(sub_9.trial.cueID==3)),mean(sub_9.trial.dropLocY(sub_9.trial.cueID==4)),mean(sub_9.trial.dropLocY(sub_9.trial.cueID==5)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==6)),mean(sub_9.trial.dropLocX(sub_9.trial.cueID==7)),mean(sub_9.trial.dropLocY(sub_9.trial.cueID==8));mean(sub_10.trial.dropLocY(sub_10.trial.cueID==1)),mean(sub_10.trial.dropLocY(sub_10.trial.cueID==2)),mean(sub_10.trial.dropLocY(sub_10.trial.cueID==3)),mean(sub_10.trial.dropLocY(sub_10.trial.cueID==4)),mean(sub_10.trial.dropLocY(sub_10.trial.cueID==5)),mean(sub_10.trial.dropLocY(sub_10.trial.cueID==6)),mean(sub_10.trial.dropLocY(sub_10.trial.cueID==7)),mean(sub_10.trial.dropLocY(sub_10.trial.cueID==8));mean(sub_11.trial.dropLocY(sub_11.trial.cueID==1)),mean(sub_11.trial.dropLocY(sub_11.trial.cueID==2)),mean(sub_11.trial.dropLocY(sub_11.trial.cueID==3)),mean(sub_11.trial.dropLocY(sub_11.trial.cueID==4)),mean(sub_11.trial.dropLocY(sub_11.trial.cueID==5)),mean(sub_11.trial.dropLocY(sub_11.trial.cueID==6)),mean(sub_11.trial.dropLocY(sub_11.trial.cueID==7)),mean(sub_11.trial.dropLocY(sub_11.trial.cueID==8));mean(sub_12.trial.dropLocY(sub_12.trial.cueID==1)),mean(sub_12.trial.dropLocY(sub_12.trial.cueID==2)),mean(sub_12.trial.dropLocY(sub_12.trial.cueID==3)),mean(sub_12.trial.dropLocY(sub_12.trial.cueID==4)),mean(sub_12.trial.dropLocY(sub_12.trial.cueID==5)),mean(sub_12.trial.dropLocY(sub_12.trial.cueID==6)),mean(sub_12.trial.dropLocY(sub_12.trial.cueID==7)),mean(sub_12.trial.dropLocY(sub_12.trial.cueID==8));mean(sub_13.trial.dropLocY(sub_13.trial.cueID==1)),mean(sub_13.trial.dropLocY(sub_13.trial.cueID==2)),mean(sub_13.trial.dropLocY(sub_13.trial.cueID==3)),mean(sub_13.trial.dropLocY(sub_13.trial.cueID==4)),mean(sub_13.trial.dropLocY(sub_13.trial.cueID==5)),mean(sub_13.trial.dropLocY(sub_13.trial.cueID==6)),mean(sub_13.trial.dropLocY(sub_13.trial.cueID==7)),mean(sub_13.trial.dropLocY(sub_13.trial.cueID==8));mean(sub_14.trial.dropLocY(sub_14.trial.cueID==1)),mean(sub_14.trial.dropLocY(sub_14.trial.cueID==2)),mean(sub_14.trial.dropLocY(sub_14.trial.cueID==3)),mean(sub_14.trial.dropLocY(sub_14.trial.cueID==4)),mean(sub_14.trial.dropLocY(sub_14.trial.cueID==5)),mean(sub_14.trial.dropLocY(sub_14.trial.cueID==6)),mean(sub_14.trial.dropLocY(sub_14.trial.cueID==7)),mean(sub_14.trial.dropLocY(sub_14.trial.cueID==8));mean(sub_15.trial.dropLocY(sub_15.trial.cueID==1)),mean(sub_15.trial.dropLocY(sub_15.trial.cueID==2)),mean(sub_15.trial.dropLocY(sub_15.trial.cueID==3)),mean(sub_15.trial.dropLocY(sub_15.trial.cueID==4)),mean(sub_15.trial.dropLocY(sub_15.trial.cueID==5)),mean(sub_15.trial.dropLocY(sub_15.trial.cueID==6)),mean(sub_15.trial.dropLocY(sub_15.trial.cueID==7)),mean(sub_15.trial.dropLocY(sub_15.trial.cueID==8));mean(sub_16.trial.dropLocY(sub_16.trial.cueID==1)),mean(sub_16.trial.dropLocY(sub_16.trial.cueID==2)),mean(sub_16.trial.dropLocY(sub_16.trial.cueID==3)),mean(sub_16.trial.dropLocY(sub_16.trial.cueID==4)),mean(sub_16.trial.dropLocY(sub_16.trial.cueID==5)),mean(sub_16.trial.dropLocY(sub_16.trial.cueID==6)),mean(sub_16.trial.dropLocY(sub_16.trial.cueID==7)),mean(sub_16.trial.dropLocY(sub_16.trial.cueID==8))];
+for iSub=1:nSubs;
+    
+    mean_droperror(iSub)= mean(trial(:,iSub).droperror(1:nTrials(iSub)));
+end
 
-mean_all_subs_xy=[mean(mean_drop_locX)',mean(mean_drop_locY)'];    
+figure
+hold on
+plot(iSub,mean_droperror, 'bd');
 
+
+%get average drop error per participant per location= how tricky locations
+%were
+for iSub=1:nSubs;
+    for iPos=1:nPos;
+        
+        locationError(iPos,iSub)= mean(trial(:,iSub).droperror(trial(:,iSub).cueID(trial(:,iSub).cueID==iPos)));
+    end
+end
 
 
 %%% plotting
