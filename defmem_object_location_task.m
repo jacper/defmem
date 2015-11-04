@@ -7,7 +7,6 @@ nSubs = 16;
 nTrials = nan(nSubs,1);
 nPos = 8;
 locationError = nan(nPos,nSubs);
-markerTypes = {'o' '*' '+' 'h' 's' 'd'  'p' 'x'};
 dondersRed  = [184 43 34]/255;
 
 
@@ -33,63 +32,21 @@ for iSub = 1:nSubs
     end
 end
 
-
-%%%trasform distances to radians per participant per trial
-%%%%%%%% dropDist=dropLoc, NOT distance, just location (???)
+%%%trasform location into radius per participant per trial
 
 for iSub=1:nSubs;
     [~, tmp]= cart2pol(trial(:,iSub).dropLocX, trial(:,iSub).dropLocY); 
     trial(:,iSub).dropDist = tmp(1:nTrials(iSub));
 end
 
-%%% get drop error per dimension per trial per participant
-%%%%%% there are negative values
-for iSub=1:nSubs;
-    
-     trial(:,iSub).droperrorX = trial(:,iSub).objLocX-trial(:,iSub).dropLocX;
-     trial(:,iSub).droperrorY = trial(:,iSub).objLocY-trial(:,iSub).dropLocY;
-
-end
-
-
-
-%get average drop error per participant per location= how tricky locations
-%were
-%%%%%%%%locationError=meandropLocation, NOT distance but LOCATION
+%get average drop error per participant per location
+%%%%%%%%locationError=meandropLocation, NOT distance but LOCATION (radius= distance to somewhere)
 for iSub=1:nSubs;
     for iPos=1:nPos;
         
         locationError(iPos,iSub)= mean(trial(:,iSub).dropDist(trial(:,iSub).cueID(trial(:,iSub).cueID==iPos)));
     end
 end
-
-figure
-hold on
-for iSub=1:nSubs;
-    subplot(4,4,iSub);
-    xlabel('Position');
-    ylabel('Mean drop error');
-    hold on
-    plot(locationError(:,iSub),'ro');
-end
-
-
-%get average drop error per participant = how good they were
-
-for iSub=1:nSubs;
-    
-    meanDropDist(iSub)= mean(trial(:,iSub).dropDist(1:nTrials(iSub)));
-end
-
-figure
-hold on
-for iSub=1:nSubs;
-    plot(iSub, meanDropDist(1,iSub), 'bd');
-end
-hold on
-xlabel('Participant')
-ylabel('Mean drop error')
-
 
 %%%correlation values betweem cue ID and drop Dist
 
@@ -111,27 +68,46 @@ civalues_tt=nan(nPos,2);
 
 %%%% BARS
 
-%mean for all subjects
+%mean of all subjects for each position
 figure
 bar(mean(locationError'))
 hold on
 xlabel ('Position');
 ylabel ('Mean error');
 
-%for each subject separetaly
+%mean of all positions for each subject= reflects performance
+figure
+bar(mean(locationError))
+hold on
+xlabel ('Participant');
+ylabel ('Mean error');
+
+%for each subject separately
 
 figure
 for iSub=1:nSubs;
     subplot(4,4,iSub);
-    xlabel('Position');
-    ylabel('Mean error');
     for iSub=iSub
         bar(locationError(:,iSub))
+        hold on
+        xlabel('Position');
+        ylabel('Mean error');
     end
 end
 
 
+
 %% X AND Y SEPARATELY
+
+%%% get drop error per dimension per trial per participant
+%%%%%% there are negative values here
+for iSub=1:nSubs;
+    
+     trial(:,iSub).droperrorX = trial(:,iSub).objLocX-trial(:,iSub).dropLocX;
+     trial(:,iSub).droperrorY = trial(:,iSub).objLocY-trial(:,iSub).dropLocY;
+
+end
+
 %%% mean X and Y error for each position
 for iSub=1:nSubs;
     for iPos=1:nPos;
